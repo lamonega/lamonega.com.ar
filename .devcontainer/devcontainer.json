@@ -1,0 +1,27 @@
+{
+  "name": "lamonega.com.ar",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/hugo:1": {
+      "extended": true,
+      "version": "0.147.2"
+    }
+  },
+  "postCreateCommand": "git submodule update --init --recursive",
+  "postStartCommand": "hugo server --buildDrafts --bind 0.0.0.0",
+  "forwardPorts": [1313],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "tamasfe.even-better-toml",
+        "davidanson.vscode-markdownlint",
+        "budparr.language-hugo-vscode"
+      ],
+      "settings": {
+        "markdownlint.config": {
+          "MD041": false
+        }
+      }
+    }
+  }
+}
