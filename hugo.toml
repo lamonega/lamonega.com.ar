@@ -1,0 +1,27 @@
+baseURL = "https://lamonega.com.ar"
+theme = "hugo-bearcub"
+copyright = "Laureano Lamonega (CC BY 4.0)"
+defaultContentLanguage = "es"
+enableRobotsTXT = true
+
+[markup]
+  [markup.highlight]
+    lineNos = true
+    lineNumbersInTable = false
+    noClasses = false
+
+[languages]
+  [languages.es]
+    title = "Laureano Lamonega"
+    languageName = "es-AR 🇦🇷"
+    LanguageCode = "es-AR"
+    contentDir = "content"
+    [languages.es.params]
+      madeWith = "Hecho con [Bear Cub](https://github.com/clente/hugo-bearcub)"
+
+[params]
+  description = "Laureano Lamonega"
+  favicon = "images/favicon.png"
+  images = ["images/share.webp"]
+  timeFormat = "2 de January de 2006"
+  generateSocialCard = true
