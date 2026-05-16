@@ -8,7 +8,7 @@
     }
   },
   "postCreateCommand": "git submodule update --init --recursive",
-  "postStartCommand": "hugo server --buildDrafts --bind 0.0.0.0",
+  "postStartCommand": "hugo server --buildDrafts --bind 0.0.0.0 </dev/null >/tmp/hugo.log 2>&1 &",
   "forwardPorts": [1313],
   "customizations": {
     "vscode": {
