@@ -1,7 +1,7 @@
 ---
 title: "No uses frameworks si tenés opiniones"
-date: 17/5/2026
-draft: true
+date: 2026-05-17
+draft: false
 ---
 
 Vos tenés un camino como desarrollador independiente del camino que tiene cualquier otra persona. Aprendiste lo que aprendiste en el orden en el que decidiste aprendirlo, si es que tomaste una decisión. En todo caso, tomaste la decisión de formar parte de la institución que te formó en desarrollo. Si ese camino que elegiste te llevó a desarrollar software de una manera en particular, entonces hacete un favor, y no uses frameworks.
