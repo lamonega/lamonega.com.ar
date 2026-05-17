@@ -21,7 +21,7 @@ enableRobotsTXT = true
 
 [params]
   description = "Laureano Lamonega"
-  favicon = "images/favicon.png"
+  favicon = "images/favicon.svg"
   images = ["images/share.webp"]
   timeFormat = "2 de January de 2006"
   generateSocialCard = true
