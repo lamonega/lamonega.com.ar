@@ -12,20 +12,21 @@ EXTENSIONS=(
 
 echo "Installing VS Code extensions if a CLI is available..."
 
-install_cmd=""
+install_bin=""
+install_arg="--install-extension"
 if command -v code >/dev/null 2>&1; then
-  install_cmd="code --install-extension"
+  install_bin="code"
 elif command -v code-server >/dev/null 2>&1; then
-  install_cmd="code-server --install-extension"
+  install_bin="code-server"
 else
   # Fallback: try to find a code-server remote-cli binary in /tmp (common for code-server installs)
   cli_path=$(find /tmp -maxdepth 12 -type f -name code-server -path "*remote-cli/*" -perm /111 -print -quit 2>/dev/null || true)
   if [ -n "$cli_path" ]; then
-    install_cmd="$cli_path --install-extension"
+    install_bin="$cli_path"
   fi
 fi
 
-if [ -z "$install_cmd" ]; then
+if [ -z "$install_bin" ]; then
   echo "No 'code' or 'code-server' CLI found. Skipping automatic extension install."
   echo "To install manually, run one of these commands on the host/container with the appropriate CLI:"
   echo "  code --install-extension <publisher.extension>"
@@ -35,7 +36,7 @@ fi
 
 for ext in "${EXTENSIONS[@]}"; do
   echo "Installing extension: $ext"
-  if $install_cmd "$ext"; then
+  if "$install_bin" "$install_arg" "$ext"; then
     echo "  -> $ext installed"
   else
     echo "  -> Failed to install $ext (continuing)"
