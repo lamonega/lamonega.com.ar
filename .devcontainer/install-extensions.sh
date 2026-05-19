@@ -1,46 +1,45 @@
 #!/usr/bin/env bash
-set -u
+set -euo pipefail
 
-# Instala extensiones para VS Code / code-server si está disponible.
-# No falla el script si no se encuentra un CLI; imprime instrucciones útiles.
+# Open VSX registry — requerido porque code-server no puede usar el marketplace de Microsoft
+export SERVICE_URL=https://open-vsx.org/vscode/gallery
+export ITEM_URL=https://open-vsx.org/vscode/item
 
+# Extensiones disponibles en Open VSX
 EXTENSIONS=(
   "tamasfe.even-better-toml"
   "davidanson.vscode-markdownlint"
   "budparr.language-hugo-vscode"
 )
 
-echo "Installing VS Code extensions if a CLI is available..."
-
-install_bin=""
-install_arg="--install-extension"
-if command -v code-server >/dev/null 2>&1; then
-  install_bin="code-server"
-elif command -v code >/dev/null 2>&1; then
-  install_bin="code"
-else
-  # Fallback: try to find a code-server remote-cli binary in /tmp (common for code-server installs)
-  cli_path=$(find /tmp -maxdepth 12 -type f -name code-server -path "*remote-cli/*" -perm /111 -print -quit 2>/dev/null || true)
-  if [ -n "$cli_path" ]; then
-    install_bin="$cli_path"
-  fi
-fi
-
-if [ -z "$install_bin" ]; then
-  echo "No 'code' or 'code-server' CLI found. Skipping automatic extension install."
-  echo "To install manually, run one of these commands on the host/container with the appropriate CLI:"
-  echo "  code --install-extension <publisher.extension>"
-  echo "  code-server --install-extension <publisher.extension>"
+if ! command -v code-server >/dev/null 2>&1; then
+  echo "code-server no encontrado en PATH, omitiendo instalación de extensiones."
   exit 0
 fi
 
+echo "==> Instalando extensiones desde Open VSX..."
 for ext in "${EXTENSIONS[@]}"; do
-  echo "Installing extension: $ext"
-  if "$install_bin" "$install_arg" "$ext"; then
-    echo "  -> $ext installed"
-  else
-    echo "  -> Failed to install $ext (continuing)"
-  fi
+  echo "    $ext"
+  code-server --install-extension "$ext" || echo "    -> falló $ext (continuando)"
 done
 
-echo "Extensions installation finished."
+# Continue.dev — no se publica actualizado en Open VSX, se instala desde GitHub Releases
+echo "==> Instalando Continue desde GitHub Releases..."
+CONTINUE_VSIX_URL=$(
+  curl -fsSL https://api.github.com/repos/continuedev/continue/releases/latest \
+  | grep browser_download_url \
+  | grep '\.vsix' \
+  | head -1 \
+  | cut -d '"' -f 4
+)
+
+if [ -n "$CONTINUE_VSIX_URL" ]; then
+  curl -fsSL "$CONTINUE_VSIX_URL" -o /tmp/continue.vsix \
+    && code-server --install-extension /tmp/continue.vsix \
+    && rm -f /tmp/continue.vsix \
+    || echo "    -> falló Continue (continuando)"
+else
+  echo "    -> no se pudo obtener la URL de descarga de Continue"
+fi
+
+echo "==> Listo."
