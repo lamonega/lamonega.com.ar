@@ -8,6 +8,11 @@
     }
   },
   "postCreateCommand": "git submodule update --init --recursive",
+  "extensions": [
+    "tamasfe.even-better-toml",
+    "davidanson.vscode-markdownlint",
+    "budparr.language-hugo-vscode"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
