@@ -14,10 +14,10 @@ echo "Installing VS Code extensions if a CLI is available..."
 
 install_bin=""
 install_arg="--install-extension"
-if command -v code >/dev/null 2>&1; then
-  install_bin="code"
-elif command -v code-server >/dev/null 2>&1; then
+if command -v code-server >/dev/null 2>&1; then
   install_bin="code-server"
+elif command -v code >/dev/null 2>&1; then
+  install_bin="code"
 else
   # Fallback: try to find a code-server remote-cli binary in /tmp (common for code-server installs)
   cli_path=$(find /tmp -maxdepth 12 -type f -name code-server -path "*remote-cli/*" -perm /111 -print -quit 2>/dev/null || true)
