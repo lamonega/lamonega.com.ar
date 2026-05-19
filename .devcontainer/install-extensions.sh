@@ -19,7 +19,7 @@ elif command -v code-server >/dev/null 2>&1; then
   install_cmd="code-server --install-extension"
 else
   # Fallback: try to find a code-server remote-cli binary in /tmp (common for code-server installs)
-  cli_path=$(find /tmp -maxdepth 5 -type f -name code-server -path "*remote-cli/*" -perm /111 -print -quit 2>/dev/null || true)
+  cli_path=$(find /tmp -maxdepth 12 -type f -name code-server -path "*remote-cli/*" -perm /111 -print -quit 2>/dev/null || true)
   if [ -n "$cli_path" ]; then
     install_cmd="$cli_path --install-extension"
   fi
