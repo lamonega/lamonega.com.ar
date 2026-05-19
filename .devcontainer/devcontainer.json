@@ -7,7 +7,7 @@
       "version": "0.147.2"
     }
   },
-  "postCreateCommand": "git submodule update --init --recursive",
+  "postCreateCommand": "./.devcontainer/install-extensions.sh && git submodule update --init --recursive",
   "extensions": [
     "tamasfe.even-better-toml",
     "davidanson.vscode-markdownlint",

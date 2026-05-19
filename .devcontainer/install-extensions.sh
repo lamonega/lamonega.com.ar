@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -u
+
+# Instala extensiones para VS Code / code-server si está disponible.
+# No falla el script si no se encuentra un CLI; imprime instrucciones útiles.
+
+EXTENSIONS=(
+  "tamasfe.even-better-toml"
+  "davidanson.vscode-markdownlint"
+  "budparr.language-hugo-vscode"
+)
+
+echo "Installing VS Code extensions if a CLI is available..."
+
+install_cmd=""
+if command -v code >/dev/null 2>&1; then
+  install_cmd="code --install-extension"
+elif command -v code-server >/dev/null 2>&1; then
+  install_cmd="code-server --install-extension"
+fi
+
+if [ -z "$install_cmd" ]; then
+  echo "No 'code' or 'code-server' CLI found. Skipping automatic extension install."
+  echo "To install manually, run one of these commands on the host/container with the appropriate CLI:"
+  echo "  code --install-extension <publisher.extension>"
+  echo "  code-server --install-extension <publisher.extension>"
+  exit 0
+fi
+
+for ext in "${EXTENSIONS[@]}"; do
+  echo "Installing extension: $ext"
+  if $install_cmd "$ext"; then
+    echo "  -> $ext installed"
+  else
+    echo "  -> Failed to install $ext (continuing)"
+  fi
+done
+
+echo "Extensions installation finished."
